@@ -107,7 +107,7 @@ namespace Program
                 var executionTimeInMs = Convert.ToInt32((DateTime.UtcNow - startTime).TotalMilliseconds);
                 var repeatTimeInMs = Convert.ToInt32(repeatFrequency.TotalMilliseconds);
 
-                if (executionTimeInMs > repeatTimeInMs)
+                if (executionTimeInMs >= repeatTimeInMs)
                     { /* Log(e) */ }
                 else
                     await Task.Delay(repeatTimeInMs - executionTimeInMs);
@@ -135,7 +135,7 @@ namespace Program
                 var executionTimeInMs = Convert.ToInt32((DateTime.UtcNow - startTime).TotalMilliseconds);
                 var repeatTimeInMs = Convert.ToInt32(repeatFrequency.TotalMilliseconds);
 
-                if (executionTimeInMs > repeatTimeInMs)
+                if (executionTimeInMs >= repeatTimeInMs)
                     { /* Log(e) */ }
                 else
                     await Task.Delay(repeatTimeInMs - executionTimeInMs);
@@ -164,7 +164,7 @@ namespace Program
                 var executionTimeInMs = Convert.ToInt32((DateTime.UtcNow - startTime).TotalMilliseconds);
                 var repeatTimeInMs = Convert.ToInt32(repeatFrequency.TotalMilliseconds);
 
-                if (executionTimeInMs > repeatTimeInMs)
+                if (executionTimeInMs >= repeatTimeInMs)
                     { /* Log(e) */ }
                 else
                     await Task.Delay(repeatTimeInMs - executionTimeInMs);
