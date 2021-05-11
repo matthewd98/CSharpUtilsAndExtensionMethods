@@ -88,13 +88,13 @@ namespace Program
 
         public static async void ScheduleRepeatedly(Func<Task> func, TimeSpan repeatFrequency, TimeSpan initialDelay = default)
         {
-            var startTime = DateTime.UtcNow;
-
             if (initialDelay != default)
                 await Task.Delay(Convert.ToInt32(initialDelay.TotalMilliseconds));
 
             while (true)
             {
+				var startTime = DateTime.UtcNow;
+				
                 try
                 {
                     await func();
@@ -107,7 +107,7 @@ namespace Program
                 var executionTimeInMs = Convert.ToInt32((DateTime.UtcNow - startTime).TotalMilliseconds);
                 var repeatTimeInMs = Convert.ToInt32(repeatFrequency.TotalMilliseconds);
 
-                if (executionTimeInMs >= repeatTimeInMs)
+                if (executionTimeInMs > repeatTimeInMs)
                     { /* Log(e) */ }
                 else
                     await Task.Delay(repeatTimeInMs - executionTimeInMs);
@@ -116,13 +116,13 @@ namespace Program
 
         public static async void ScheduleRepeatedly(Func<CancellationToken?, Task> func, TimeSpan repeatFrequency, CancellationToken? cancellationToken, TimeSpan initialDelay = default)
         {
-            var startTime = DateTime.UtcNow;
-
             if (initialDelay != default)
                 await Task.Delay(Convert.ToInt32(initialDelay.TotalMilliseconds));
 
             while (true)
             {
+				var startTime = DateTime.UtcNow;
+				
                 try
                 {
                     await func(cancellationToken);
@@ -135,7 +135,7 @@ namespace Program
                 var executionTimeInMs = Convert.ToInt32((DateTime.UtcNow - startTime).TotalMilliseconds);
                 var repeatTimeInMs = Convert.ToInt32(repeatFrequency.TotalMilliseconds);
 
-                if (executionTimeInMs >= repeatTimeInMs)
+                if (executionTimeInMs > repeatTimeInMs)
                     { /* Log(e) */ }
                 else
                     await Task.Delay(repeatTimeInMs - executionTimeInMs);
@@ -144,8 +144,6 @@ namespace Program
 
         public static async void ScheduleRepeatedly(Func<CancellationToken?, Task> func, TimeSpan repeatFrequency, TimeSpan timeout, TimeSpan initialDelay = default)
         {
-            var startTime = DateTime.UtcNow;
-
             if (initialDelay != default)
                 await Task.Delay(Convert.ToInt32(initialDelay.TotalMilliseconds));
 
@@ -153,6 +151,8 @@ namespace Program
             {
                 try
                 {
+					var startTime = DateTime.UtcNow;
+					
                     using var cancellationTokenSource = timeout != default ? new CancellationTokenSource(timeout) : null;
                     await func(cancellationTokenSource?.Token);
                 }
@@ -164,7 +164,7 @@ namespace Program
                 var executionTimeInMs = Convert.ToInt32((DateTime.UtcNow - startTime).TotalMilliseconds);
                 var repeatTimeInMs = Convert.ToInt32(repeatFrequency.TotalMilliseconds);
 
-                if (executionTimeInMs >= repeatTimeInMs)
+                if (executionTimeInMs > repeatTimeInMs)
                     { /* Log(e) */ }
                 else
                     await Task.Delay(repeatTimeInMs - executionTimeInMs);
