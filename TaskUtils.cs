@@ -39,11 +39,11 @@ namespace Program
                 await tcs.Task;
             }
         }
-		
-		public static async void ScheduleOnce(Func<Task> func, TimeSpan initialDelay = default)
+
+        public static async void ScheduleOnce(Func<Task> func, TimeSpan initialDelay = default)
         {
             if (initialDelay != default)
-                await Task.Delay(Convert.ToInt32(initialDelay.TotalMilliseconds));
+                await Task.Delay(initialDelay);
 
             try
             {
@@ -51,124 +51,94 @@ namespace Program
             }
             catch (Exception e)
             {
-                // Log (e);
+                // Log(e);
             }
         }
 
-        public static async void ScheduleOnce(Func<CancellationToken?, Task> func, CancellationToken? cancellationToken, TimeSpan initialDelay = default)
+        public static async void ScheduleOnce(Func<CancellationToken, Task> func, CancellationToken cancellationToken, TimeSpan initialDelay = default)
         {
-            if (initialDelay != default)
-                await Task.Delay(Convert.ToInt32(initialDelay.TotalMilliseconds));
-
             try
             {
-                await func(cancellationToken);   
+                if (initialDelay != default)
+                    await Task.Delay(initialDelay, cancellationToken);
+
+                await func(cancellationToken);
+            }
+            catch (TaskCanceledException e)
+            {
+                // Log(e);
             }
             catch (Exception e)
             {
-                // Log (e);
-            }
-        }
-
-        public static async void ScheduleOnce(Func<CancellationToken?, Task> func, TimeSpan timeout, TimeSpan initialDelay = default)
-        {
-            if (initialDelay != default)
-                await Task.Delay(Convert.ToInt32(initialDelay.TotalMilliseconds));
-
-            try
-            {
-                using var cancellationTokenSource = timeout != default ? new CancellationTokenSource(timeout) : null;
-                await func(cancellationTokenSource?.Token);
-            }
-            catch (Exception e)
-            {
-                // Log (e);
+                // Log(e);
             }
         }
 
         public static async void ScheduleRepeatedly(Func<Task> func, TimeSpan repeatFrequency, TimeSpan initialDelay = default)
         {
             if (initialDelay != default)
-                await Task.Delay(Convert.ToInt32(initialDelay.TotalMilliseconds));
+                await Task.Delay(initialDelay);
 
             while (true)
             {
-				var startTime = DateTime.UtcNow;
-				
+                var startTime = DateTime.UtcNow;
+
                 try
                 {
                     await func();
                 }
                 catch (Exception e)
                 {
-                    // Log (e);
+                    // Log(e);
                 }
 
                 var executionTimeInMs = Convert.ToInt32((DateTime.UtcNow - startTime).TotalMilliseconds);
                 var repeatTimeInMs = Convert.ToInt32(repeatFrequency.TotalMilliseconds);
 
                 if (executionTimeInMs > repeatTimeInMs)
-                    { /* Log(e) */ }
+                    { /* Log("Execution time exceeded repeat time"); */ }
                 else
                     await Task.Delay(repeatTimeInMs - executionTimeInMs);
             }
         }
 
-        public static async void ScheduleRepeatedly(Func<CancellationToken?, Task> func, TimeSpan repeatFrequency, CancellationToken? cancellationToken, TimeSpan initialDelay = default)
+        public static async void ScheduleRepeatedly(Func<CancellationToken, Task> func, TimeSpan repeatFrequency, CancellationToken cancellationToken, TimeSpan initialDelay = default)
         {
-            if (initialDelay != default)
-                await Task.Delay(Convert.ToInt32(initialDelay.TotalMilliseconds));
-
-            while (true)
+            try
             {
-				var startTime = DateTime.UtcNow;
-				
-                try
-                {
-                    await func(cancellationToken);
-                }
-                catch (Exception e)
-                {
-                    // Log (e);
-                }
+                if (initialDelay != default)
+                    await Task.Delay(initialDelay, cancellationToken);
 
-                var executionTimeInMs = Convert.ToInt32((DateTime.UtcNow - startTime).TotalMilliseconds);
-                var repeatTimeInMs = Convert.ToInt32(repeatFrequency.TotalMilliseconds);
+                while (true)
+                {
+                    var startTime = DateTime.UtcNow;
 
-                if (executionTimeInMs > repeatTimeInMs)
-                    { /* Log(e) */ }
-                else
-                    await Task.Delay(repeatTimeInMs - executionTimeInMs);
+                    try
+                    {
+                        await func(cancellationToken);
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        throw;
+                    }
+                    catch (Exception e)
+                    {
+                        // Log(e);
+                    }
+
+                    var executionTimeInMs = Convert.ToInt32((DateTime.UtcNow - startTime).TotalMilliseconds);
+                    var repeatTimeInMs = Convert.ToInt32(repeatFrequency.TotalMilliseconds);
+
+                    if (executionTimeInMs > repeatTimeInMs)
+                        { /* Log("Execution time exceeded repeat time"); */ }
+                    else
+                        await Task.Delay(repeatTimeInMs - executionTimeInMs, cancellationToken);
+                }
+            }
+            catch (TaskCanceledException e)
+            {
+                // Log(e);
             }
         }
-
-        public static async void ScheduleRepeatedly(Func<CancellationToken?, Task> func, TimeSpan repeatFrequency, TimeSpan timeout, TimeSpan initialDelay = default)
-        {
-            if (initialDelay != default)
-                await Task.Delay(Convert.ToInt32(initialDelay.TotalMilliseconds));
-
-            while (true)
-            {
-                try
-                {
-					var startTime = DateTime.UtcNow;
-					
-                    using var cancellationTokenSource = timeout != default ? new CancellationTokenSource(timeout) : null;
-                    await func(cancellationTokenSource?.Token);
-                }
-                catch (Exception e)
-                {
-                    // Log (e);
-                }
-
-                var executionTimeInMs = Convert.ToInt32((DateTime.UtcNow - startTime).TotalMilliseconds);
-                var repeatTimeInMs = Convert.ToInt32(repeatFrequency.TotalMilliseconds);
-
-                if (executionTimeInMs > repeatTimeInMs)
-                    { /* Log(e) */ }
-                else
-                    await Task.Delay(repeatTimeInMs - executionTimeInMs);
-            }
-        }	
     }
 }
