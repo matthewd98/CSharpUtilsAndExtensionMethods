@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Program
+namespace CSharpUtilsAndExtensionMethods.WindowsOnly
 {
     public static class ProcessExtensions
     {

@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Program
+namespace CSharpUtilsAndExtensionMethods.General
 {
     public static class TaskUtils
     {

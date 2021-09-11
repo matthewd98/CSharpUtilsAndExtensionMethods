@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AspNet5_0;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Routing;
 
-namespace AspNet5_0
+namespace CSharpUtilsAndExtensionMethods.AspNet.Tests
 {
     public static class ControllerTestHelper
     {

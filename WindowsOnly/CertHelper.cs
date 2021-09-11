@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 
-namespace Program
+namespace CSharpUtilsAndExtensionMethods.WindowsOnly
 {
     public static class CertHelper
     {
