@@ -3,7 +3,7 @@ using FluentAssertions;
 using FluentAssertions.Execution;
 using FluentAssertions.Types;
 
-namespace UnitTests
+namespace CSharpUtilsAndExtensionMethods.Tests
 {
     public static class FluentAssertionsExtensions
     {

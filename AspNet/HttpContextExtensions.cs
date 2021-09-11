@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AspNet5_0
+namespace CSharpUtilsAndExtensionMethods.AspNet
 {
     public static class HttpContextExtensions
     {

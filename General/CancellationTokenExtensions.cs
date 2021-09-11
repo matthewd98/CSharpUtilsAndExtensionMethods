@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Program
+namespace CSharpUtilsAndExtensionMethods.General
 {
     internal static class CancellationTokenExtensions
     {
@@ -10,7 +10,7 @@ namespace Program
         {
             var cancelationTaskCompletionSource = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
             cancellationToken.Register(
-                (object? taskCompletionSource) => ((TaskCompletionSource<bool>)taskCompletionSource!).SetResult(true),
+                (taskCompletionSource) => ((TaskCompletionSource<bool>)taskCompletionSource!).SetResult(true),
                 cancelationTaskCompletionSource);
 
             return cancellationToken.IsCancellationRequested
