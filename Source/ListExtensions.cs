@@ -5,7 +5,7 @@ namespace Program
 {
     public static class ListExtensions
     {
-        public static List<T> ObjectToList<T>(this T instance) => new List<T> { instance };
+        public static List<T> ObjectToList<T>(this T instance) => new() { instance };
 
         public static List<List<T>> ChunkBy<T>(this List<T> source, int chunkSize)
         {

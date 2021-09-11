@@ -1,11 +1,11 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Program
 {
     internal static class CancellationTokenExtensions
-    {      
+    {
+        // Wait async until token is cancelled
         internal static Task WaitAsync(this CancellationToken cancellationToken)
         {
             var cancelationTaskCompletionSource = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
