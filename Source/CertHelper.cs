@@ -28,10 +28,8 @@ namespace Program
                 if (!Directory.Exists(path)) continue;
 
                 // When retrieving certificates, ignore private key(s) and CA certificate(s).
-                files.AddRange(
-                    Directory.GetFiles(path, "*.pem", SearchOption.TopDirectoryOnly)
-                        .Where(
-                            file => !Regex.IsMatch(file, @"(.*key.*\.pem)|(.*cacert.*\.pem)", RegexOptions.IgnoreCase)));
+                files.AddRange(Directory.GetFiles(path, "*.pem", SearchOption.TopDirectoryOnly)
+                    .Where(file => !Regex.IsMatch(file, @"(.*key.*\.pem)|(.*cacert.*\.pem)", RegexOptions.IgnoreCase)));
             }
 
             return files;
