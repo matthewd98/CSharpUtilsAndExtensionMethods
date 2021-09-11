@@ -6,6 +6,7 @@ namespace Program
 {
     public static class TaskUtils
     {
+        // WaitUntil condition is true on object (spins but backoff time is async).
         public static async Task WaitUntil<T>(T @object, Func<T, bool> func, int backoffTime, TimeSpan? maxWaitTime = null)
         {
             var tcs = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -38,6 +39,14 @@ namespace Program
 
                 await tcs.Task;
             }
+        }
+
+        // For non-cancellable task.
+        public static async Task<T> WaitAsync<T>(this Task<T> task, TimeSpan timeout)
+        {
+            return await Task.WhenAny(task, Task.Delay(timeout)) == task
+                ? await task
+                : throw new TimeoutException();
         }
 
         public static async void ScheduleOnce(Func<Task> func, TimeSpan initialDelay = default)

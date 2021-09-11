@@ -28,5 +28,8 @@ namespace Program
             var plainBytes = rsa.Decrypt(bytesToDecrypt, RSAEncryptionPadding.Pkcs1);
             return new ASCIIEncoding().GetString(plainBytes);
         }
+
+        public static bool Contains(this string source, string toCheck, StringComparison stringComparison) 
+            => source?.IndexOf(toCheck, stringComparison) >= 0;
     }
 }

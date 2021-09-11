@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Moq;
 
-namespace AspNet_UnitTests
+namespace AspNet5_0
 {
     public static class HttpContextTestHelper
     {
