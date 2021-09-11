@@ -9,7 +9,7 @@ namespace AspNet_UnitTests
     {
         public const string AdminUserIdString = "00000000000000000000000000000000";
 
-        public static HttpContext BuildAuthorizedHttpContextMock(HttpContext httpContext = null)
+        public static HttpContext BuildAuthorizedHttpContextMock(HttpContext? httpContext = null)
         {
             IList<Claim> claims = new List<Claim>
             {
